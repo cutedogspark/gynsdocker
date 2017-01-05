@@ -1,0 +1,23 @@
+FROM php:7.0-fpm
+
+MAINTAINER Chen Ming-Jui <cutedogspark@gmail.com>
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        libmemcached-dev \
+        libz-dev \
+        libpq-dev \
+        libjpeg-dev \
+        libpng12-dev \
+        libfreetype6-dev \
+        libssl-dev \
+        libmcrypt-dev \
+        libjpeg62-turbo-dev
+
+RUN docker-php-ext-install -j$(nproc) mcrypt pdo_mysql pdo_pgsql iconv
+RUN docker-php-ext-configure gd \
+        --enable-gd-native-ttf \
+        --with-jpeg-dir=/usr/lib \
+        --with-freetype-dir=/usr/include/freetype2 && \
+RUN docker-php-ext-install -j$(nproc) gd

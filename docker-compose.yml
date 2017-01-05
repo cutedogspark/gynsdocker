@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+
+### MariaDB Container #######################################
+    mariadb:
+        # image: gyns-mariadb
+        build: ./mariadb
+        volumes:
+            - ./data/mariadb/mysql:/var/lib/mysql
+            - ./data/mariadb/log:/var/log
+        ports:
+            - "3306:3306"
+        # restart: always
+        environment:
+            MYSQL_DATABASE: ${DB_TABLE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASS}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS}
+## Nginx Server Container ##################################
+    # nginx:
+    #     # image: gyns-nginx
+    #     build:
+    #         context: ./nginx
+    #         args:
+    #             - PHP_UPSTREAM=php-fpm
+    #             - PHP_UPSTREAM_PORT=9000
+    #             - NGINX_USER_NAME=www-data
+    #             - NGINX_USER_UID=1000
+    #     volumes_from:
+    #         - applications
+    #     volumes:
+    #         - ./data/nginx/log:/var/log/nginx
+    #         - ./web/sites:/etc/nginx/sites-available
+    #     ports:
+    #         - "80:80"
+    #         - "443:443"
+    #     links:
+    #         - php-fpm
